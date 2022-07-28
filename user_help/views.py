@@ -6,8 +6,8 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from user_help.helpers.get_user_with_addresses_count import \
-    get_user_with_addresses_count
+from user_help.helpers.get_users_with_addresses_count import \
+    get_users_with_addresses_count
 from user_help.models.user_address import UserAddress
 from user_help.serializers import (PublicUserProfileForSupportersSerializer,
                                    UserAddressSerializer)
@@ -27,7 +27,7 @@ def add_user_address(request):
 @csrf_exempt
 @api_view(['GET'])
 def get_users_list(request):
-    users = get_user_with_addresses_count()
+    users = get_users_with_addresses_count()
     data: List[Dict] = []
 
     for user in users:
