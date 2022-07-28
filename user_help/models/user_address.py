@@ -8,13 +8,13 @@ from django.utils.translation import gettext_lazy as _
 
 
 class UserAddress(models.Model):
+    class Meta:
+        verbose_name = 'User Address'
 
     class CreatorTtype(models.TextChoices):
         USER = 'USR', _('User')
         SUPPORTER = 'SUP', _('Supporter')
 
-
-    user = models.ForeignKey(to=CustomUser, on_delete=models.CASCADE)
     title = models.CharField(max_length=50, blank=True, default='')
     location = PlainLocationField(based_fields=['city'], zoom=7)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -23,6 +23,7 @@ class UserAddress(models.Model):
     creator_type = models.CharField(
         max_length=3, choices=CreatorTtype.choices, default=CreatorTtype.USER
     )
+    user = models.ForeignKey(to=CustomUser, on_delete=models.CASCADE)
 
     REQUIRED_FIELDS = [
         'title', 'location', 'user'
