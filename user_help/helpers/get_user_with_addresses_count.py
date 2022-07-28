@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+
 from django.db.models import Count
 
 from user_help.models import CustomUser

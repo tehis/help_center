@@ -3,8 +3,6 @@ import uuid
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from location_field.models.plain import PlainLocationField
-from pygments.lexers import get_all_lexers
-from pygments.styles import get_all_styles
 
 from .custom_user import CustomUser
 
