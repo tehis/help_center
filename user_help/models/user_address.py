@@ -1,27 +1,30 @@
-from django.db import models
-from .custom_user import CustomUser
-from location_field.models.plain import PlainLocationField
 import uuid
+
+from django.db import models
+from django.utils.translation import gettext_lazy as _
+from location_field.models.plain import PlainLocationField
 from pygments.lexers import get_all_lexers
 from pygments.styles import get_all_styles
-from django.utils.translation import gettext_lazy as _
+
+from .custom_user import CustomUser
+
+
+class CreatorType(models.TextChoices):
+    USER = 'USR', _('User')
+    SUPPORTER = 'SUP', _('Supporter')
 
 
 class UserAddress(models.Model):
     class Meta:
         verbose_name = 'User Address'
 
-    class CreatorTtype(models.TextChoices):
-        USER = 'USR', _('User')
-        SUPPORTER = 'SUP', _('Supporter')
-
     title = models.CharField(max_length=50, blank=True, default='')
     location = PlainLocationField(based_fields=['city'], zoom=7)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now=True)
-    creator_type = models.CharField(
-        max_length=3, choices=CreatorTtype.choices, default=CreatorTtype.USER
+    created_by = models.CharField(
+        max_length=3, choices=CreatorType.choices, default=CreatorType.USER
     )
     user = models.ForeignKey(to=CustomUser, on_delete=models.CASCADE)
 
@@ -30,4 +33,5 @@ class UserAddress(models.Model):
     ]
 
     def __str__(self):
-        return self.title + " " + self.location
+        return self.user.first_name + " " + self.user.last_name + " " + \
+            self.title
